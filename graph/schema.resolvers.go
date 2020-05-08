@@ -9,13 +9,14 @@ import (
 
 	"github.com/AlexSwiss/bookworm/graph/generated"
 	"github.com/AlexSwiss/bookworm/graph/model"
+	"github.com/AlexSwiss/bookworm/graph/models"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+func (r *mutationResolver) AddBook(ctx context.Context, input *model.NewBook, author []*model.NewAuthor) (*models.Book, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+func (r *queryResolver) Books(ctx context.Context, search *string) ([]*models.Book, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 

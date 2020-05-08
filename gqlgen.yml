@@ -1,6 +1,6 @@
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  - graph/*.graphqls
+  - graph/*.graphql
 
 # Where should the generated server code go?
 exec:
@@ -16,6 +16,13 @@ exec:
 model:
   filename: graph/model/models_gen.go
   package: model
+
+# where our custom models should go?
+models:
+  Book:
+    model: github.com/AlexSwiss/bookworm/graph/models.Book
+  Author:
+    model: github.com/AlexSwiss/bookworm/graph/models.Author
 
 # Where should the resolver implementations go?
 resolver:
@@ -36,21 +43,3 @@ resolver:
 # if they match it will use them, otherwise it will generate them.
 autobind:
   - "github.com/AlexSwiss/bookworm/graph/model"
-
-# This section declares type mapping between the GraphQL and go type systems
-#
-# The first line in each type will be used as defaults for resolver arguments and
-# modelgen, the others will be allowed when binding to fields. Configure them to
-# your liking
-models:
-  ID:
-    model:
-      - github.com/99designs/gqlgen/graphql.ID
-      - github.com/99designs/gqlgen/graphql.Int
-      - github.com/99designs/gqlgen/graphql.Int64
-      - github.com/99designs/gqlgen/graphql.Int32
-  Int:
-    model:
-      - github.com/99designs/gqlgen/graphql.Int
-      - github.com/99designs/gqlgen/graphql.Int64
-      - github.com/99designs/gqlgen/graphql.Int32
