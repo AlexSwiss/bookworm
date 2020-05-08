@@ -1,5 +1,18 @@
 package models
 
+import (
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+)
+
+func FetchConnection() *gorm.DB {
+	db, err := gorm.Open("mysql", "root:rosecransB430@/golang")
+	if err != nil {
+		panic(err)
+	}
+	return db
+}
+
 type Author struct {
 	ID        string `json:"id" gorm:"primary_key"`
 	Firstname string `json:"firstname"`

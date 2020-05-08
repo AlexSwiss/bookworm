@@ -9,11 +9,18 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/AlexSwiss/bookworm/graph"
 	"github.com/AlexSwiss/bookworm/graph/generated"
+	"github.com/AlexSwiss/bookworm/graph/models"
 )
 
 const defaultPort = "8080"
 
 func main() {
+
+	//Migrate Db
+	db := models.FetchConnection()
+	db.AutoMigrate(&models.Book{}, &models.Author{})
+	db.Close()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
