@@ -13,7 +13,23 @@ import (
 )
 
 func (r *mutationResolver) AddBook(ctx context.Context, input *model.NewBook, author []*model.NewAuthor) (*models.Book, error) {
-	panic(fmt.Errorf("not implemented"))
+	db := models.FetchConnection()
+	defer db.Close()
+
+	//create book using input struct
+	book := models.Book{
+		Name:     input.Name,
+		Category: input.Category,
+	}
+
+	book.Author = make([]*models.Author, len(author))
+
+	for index, item := range author {
+		book.Author[index] = &models.Author{Firstname: item.Firstname, Lastname: item.Lastname}
+	}
+
+	db.Create(&book)
+	return &book, nil
 }
 
 func (r *queryResolver) Books(ctx context.Context, search *string) ([]*models.Book, error) {

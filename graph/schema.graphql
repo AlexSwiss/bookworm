@@ -1,15 +1,15 @@
 type Book {
-    id: ID!
+    id: Int!
     name: String!
     category: String!
     author: [Author!]!
 }
 
 type Author {
-    id: ID!
+    id: Int!
     firstname: String!
     lastname: String!
-    bookID: Int!
+    bookID: ID!
 }
 
 type Query {

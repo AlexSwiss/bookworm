@@ -234,17 +234,17 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 
 var sources = []*ast.Source{
 	&ast.Source{Name: "graph/schema.graphql", Input: `type Book {
-    id: ID!
+    id: Int!
     name: String!
     category: String!
     author: [Author!]!
 }
 
 type Author {
-    id: ID!
+    id: Int!
     firstname: String!
     lastname: String!
-    bookID: Int!
+    bookID: ID!
 }
 
 type Query {
@@ -387,9 +387,9 @@ func (ec *executionContext) _Author_id(ctx context.Context, field graphql.Collec
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Author_firstname(ctx context.Context, field graphql.CollectedField, obj *models.Author) (ret graphql.Marshaler) {
@@ -491,7 +491,7 @@ func (ec *executionContext) _Author_bookID(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNID2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Book_id(ctx context.Context, field graphql.CollectedField, obj *models.Book) (ret graphql.Marshaler) {
@@ -523,9 +523,9 @@ func (ec *executionContext) _Book_id(ctx context.Context, field graphql.Collecte
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Book_name(ctx context.Context, field graphql.CollectedField, obj *models.Book) (ret graphql.Marshaler) {
@@ -2412,12 +2412,12 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
-	return graphql.UnmarshalID(v)
+func (ec *executionContext) unmarshalNID2int(ctx context.Context, v interface{}) (int, error) {
+	return graphql.UnmarshalIntID(v)
 }
 
-func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
-	res := graphql.MarshalID(v)
+func (ec *executionContext) marshalNID2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalIntID(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
