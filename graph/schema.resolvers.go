@@ -38,7 +38,7 @@ func (r *queryResolver) Books(ctx context.Context, search *string) ([]*models.Bo
 	var books []*models.Book
 
 	//preload loads the author relationship into each book
-	db.Preload("author").Find(&books)
+	db.Preload("Author").Find(&books)
 
 	return books, nil
 }
