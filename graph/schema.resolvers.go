@@ -5,7 +5,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/AlexSwiss/bookworm/graph/generated"
 	"github.com/AlexSwiss/bookworm/graph/model"
@@ -33,7 +32,15 @@ func (r *mutationResolver) AddBook(ctx context.Context, input *model.NewBook, au
 }
 
 func (r *queryResolver) Books(ctx context.Context, search *string) ([]*models.Book, error) {
-	panic(fmt.Errorf("not implemented"))
+	db := models.FetchConnection()
+	defer db.Close()
+
+	var books []*models.Book
+
+	//preload loads the author relationship into each book
+	db.Preload("author").Find(&books)
+
+	return books, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
