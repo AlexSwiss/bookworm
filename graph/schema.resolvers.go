@@ -31,6 +31,46 @@ func (r *mutationResolver) AddBook(ctx context.Context, input *model.NewBook, au
 	return &book, nil
 }
 
+func (r *mutationResolver) EditBook(ctx context.Context, id *int, input *model.NewBook, author []*model.NewAuthor) (*models.Book, error) {
+	db := models.FetchConnection()
+	defer db.Close()
+
+	var book models.Book
+
+	//find book based on ID
+	db = db.Preload("Authors").Where("id = ?", *id).First(&book).Update("name", input.Name)
+	if input.Category != "" {
+		db.Update("category", *&input.Category)
+	}
+
+	//update author
+	book.Author = make([]*models.Author, len(author))
+	for index, item := range author {
+		book.Author[index] = &models.Author{Firstname: item.Firstname, Lastname: item.Lastname}
+	}
+
+	db.Save(&book)
+	return &book, nil
+
+}
+
+func (r *mutationResolver) DeleteBook(ctx context.Context, id *int) ([]*models.Book, error) {
+	db := models.FetchConnection()
+	defer db.Close()
+
+	var book models.Book
+
+	//fetch based on ID and delete
+	db.Where("id = ?", *id).First(&book).Delete(&book)
+
+	//preload and fetch all recipe
+	var books []*models.Book
+	db.Preload("Author").Find(&books)
+
+	return books, nil
+
+}
+
 func (r *queryResolver) Books(ctx context.Context, search *string) ([]*models.Book, error) {
 	db := models.FetchConnection()
 	defer db.Close()

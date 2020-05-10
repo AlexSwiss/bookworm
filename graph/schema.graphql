@@ -29,4 +29,6 @@ input newAuthor {
 
 type Mutation {
     addBook(input: newBook, author: [newAuthor]): Book!
+    editBook(id: Int, input: newBook, author: [newAuthor] = []): Book!
+    deleteBook(id: Int): [Book!]!
 }
